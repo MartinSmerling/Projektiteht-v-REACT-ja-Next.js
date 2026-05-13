@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation';
 
 export async function createInvoice(formData: FormData) {
   const userId = await getSession();
+  console.log('userId:', userId);
   if (!userId) redirect('/login');
 
   const customer = formData.get('customer') as string;
