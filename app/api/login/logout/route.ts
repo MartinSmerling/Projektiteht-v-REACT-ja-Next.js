@@ -3,6 +3,6 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: Request) {
   await destroySession();
-  const url = new URL('/login', req.url);
+  const url = new URL('/', req.url);
   return NextResponse.redirect(url);
 }
