@@ -1,12 +1,12 @@
 'use server';
-
 import { prisma } from '@/lib/prisma';
-import { getSession } from '@/lib/auth';
+import { cookies } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 export async function createInvoice(formData: FormData) {
-  const userId = await getSession();
+  const cookieStore = await cookies();
+  const userId = cookieStore.get('session')?.value;
   console.log('userId:', userId);
   if (!userId) redirect('/login');
 
@@ -17,13 +17,13 @@ export async function createInvoice(formData: FormData) {
   await prisma.invoice.create({
     data: { customer, amount, status, userId },
   });
-
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
 
 export async function updateInvoice(id: string, formData: FormData) {
-  const userId = await getSession();
+  const cookieStore = await cookies();
+  const userId = cookieStore.get('session')?.value;
   if (!userId) redirect('/login');
 
   const customer = formData.get('customer') as string;
@@ -34,15 +34,14 @@ export async function updateInvoice(id: string, formData: FormData) {
     where: { id },
     data: { customer, amount, status, userId },
   });
-
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
-  const userId = await getSession();
+  const cookieStore = await cookies();
+  const userId = cookieStore.get('session')?.value;
   if (!userId) redirect('/login');
-
   await prisma.invoice.delete({ where: { id } });
   revalidatePath('/dashboard/invoices');
 }
