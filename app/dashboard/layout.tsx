@@ -19,12 +19,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           🧾 Laskut
         </Link>
         <div className="mt-auto">
-          <Link
-            href="/api/logout"
-            className="px-4 py-2 rounded-lg hover:bg-red-800 transition text-gray-400 hover:text-white block"
-          >
-            🚪 Kirjaudu ulos
-          </Link>
+          <form action="/api/logout" method="GET">
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-lg hover:bg-red-800 transition text-gray-400 hover:text-white block w-full text-left"
+            >
+              🚪 Kirjaudu ulos
+            </button>
+          </form>
         </div>
       </aside>
       <main className="flex-1 bg-gray-950 p-8">{children}</main>
