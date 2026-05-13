@@ -1,8 +1,18 @@
-export default function DashboardPage() {
+import { prisma } from '../../../lib/prisma';
+
+export default async function InvoicesPage() {
+  const invoices = await prisma.invoice.findMany();
+
   return (
-    <Card>
-      <h1 className="text-2xl font-bold">Welcome to your dashboard</h1>
-      <p>Here is an overview of your activity.</p>
-    </Card>
+    <div>
+      <h1 className="text-2xl font-bold">Invoices</h1>
+      <ul>
+        {invoices.map((invoice) => (
+          <li key={invoice.id}>
+            {invoice.customer} — {invoice.amount} ({invoice.status})
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
