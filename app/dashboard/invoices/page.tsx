@@ -1,4 +1,5 @@
-import prisma from '../../lib/prisma';
+import { getPrisma } from '../../../lib/prisma';
+const prisma = getPrisma();
 
 export default async function InvoicesPage() {
   const invoices = await prisma.invoice.findMany();
