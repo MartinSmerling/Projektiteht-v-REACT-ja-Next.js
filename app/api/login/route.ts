@@ -1,18 +1,24 @@
 import { prisma } from '@/lib/prisma';
-import { createSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 
-export async function POST(req: Request) {
+export async function PUT(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
   const data = await req.json();
-  const user = await prisma.user.findUnique({
-    where: { email: data.email }
+  const invoice = await prisma.invoice.update({
+    where: { id },
+    data: { customer: data.customer, amount: data.amount, status: data.status },
   });
+  return NextResponse.json(invoice);
+}
 
-  if (!user || user.password !== data.password) {
-    return NextResponse.json({ error: 'Virheellinen tunnus' }, { status: 401 });
-  }
-
-  await createSession(user.id);
-
+export async function DELETE(
+  _: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  await prisma.invoice.delete({ where: { id } });
   return NextResponse.json({ ok: true });
 }
