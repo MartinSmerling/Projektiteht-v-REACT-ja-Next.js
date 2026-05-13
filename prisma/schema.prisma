@@ -18,7 +18,7 @@ model User {
 model Invoice {
   id        String   @id @default(cuid())
   customer  String
-  amount    Int
+  amount    Float
   status    String
   userId    String
   user      User     @relation(fields: [userId], references: [id])
