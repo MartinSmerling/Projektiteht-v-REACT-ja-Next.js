@@ -10,7 +10,7 @@ export async function createInvoice(formData: FormData) {
   if (!userId) redirect('/login');
 
   const customer = formData.get('customer') as string;
-  const amount = parseFloat(formData.get('amount') as string);
+  const amount = Math.round(parseFloat(formData.get('amount') as string));
   const status = formData.get('status') as string;
 
   await prisma.invoice.create({
@@ -26,7 +26,7 @@ export async function updateInvoice(id: string, formData: FormData) {
   if (!userId) redirect('/login');
 
   const customer = formData.get('customer') as string;
-  const amount = parseFloat(formData.get('amount') as string);
+  const amount = Math.round(parseFloat(formData.get('amount') as string));
   const status = formData.get('status') as string;
 
   await prisma.invoice.update({
